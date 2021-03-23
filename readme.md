@@ -1,14 +1,47 @@
 # Rethink Plaintext Editing
 
-This is our frontend coding challenge. It gives us a chance to see your abilities and how you approach problems. It is designed to give you unlimited creative freedom as you develop a solution. Feel free to use any packages/tools/etc. you'd like to edit text as elegantly as possible. There are a variety of different file types to experiment with as you see fit.
+Frontend coding challenge forked from [https://github.com/rethinksoftware/rethink-plaintext-editing/](https://github.com/rethinksoftware/rethink-plaintext-editing/)
 
-To run the challenge:
+#### To Run
 
-- FORK this repo
-- Download forked repo and run `npm install && npm run dev`
-- Open `localhost:3000` in your browser
-- Enjoy
+From the command line
 
-Once complete, please email us a link to your forked repo with clean, tested code. We will use Chrome to run it.
+`npm install && npm run dev`
 
-- Rethink Engineering
+Then navigate to [localhost:3000](http://localhost:3000)
+
+#### Usage
+
+Clicking on a file from the left hand panel will show a preview on the right hand side.  Clicking 'Edit' will transform the right hand side into a text editor.
+
+![Plaintext Preview](https://raw.githubusercontent.com/robertveboyd/rethink-plaintext-editing/master/images/usage-1.png)
+
+![Plaintext Editor](https://raw.githubusercontent.com/robertveboyd/rethink-plaintext-editing/master/images/usage-2.png)
+
+The text of the file can then be edited.  Once a file has been edited, the user can click 'Preview' to preview their changes or 'Save' to save the file in memory.
+
+![Edited Text](https://raw.githubusercontent.com/robertveboyd/rethink-plaintext-editing/master/images/usage-3.png)
+
+![Edited Preview](https://raw.githubusercontent.com/robertveboyd/rethink-plaintext-editing/master/images/usage-4.png)
+
+Markdown files can be previewed with their markdown rendered.
+
+![Markdown Preview](https://raw.githubusercontent.com/robertveboyd/rethink-plaintext-editing/master/images/usage-5.png)
+
+Javascript and JSON files previews display code highlighting.
+
+![Javascript Preview](https://raw.githubusercontent.com/robertveboyd/rethink-plaintext-editing/master/images/usage-6.png)
+
+![JSON Preview](https://raw.githubusercontent.com/robertveboyd/rethink-plaintext-editing/master/images/usage-7.png)
+
+While editing a markdown file there are buttons to add common markdown syntax.
+
+![Markdown Editor](https://raw.githubusercontent.com/robertveboyd/rethink-plaintext-editing/master/images/usage-8.png)
+
+![Markdown Preview](https://raw.githubusercontent.com/robertveboyd/rethink-plaintext-editing/master/images/usage-9.png)
+
+#### Resources
+
+- [Heroicons](https://heroicons.com/) and [Flaticon](https://www.flaticon.com/) for svg icons
+- [markedjs](https://github.com/markedjs/marked) for markdown rendering
+- [highlight.js](https://highlightjs.org/) for code highlighting
