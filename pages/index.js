@@ -6,9 +6,13 @@ import classNames from 'classnames';
 
 import { listFiles } from '../files';
 
-// Used below, these need to be registered
-import MarkdownEditor from '../MarkdownEditor';
-import PlaintextEditor from '../components/PlaintextEditor';
+import TextPreviewer from '../components/Previewer/TextPreviewer';
+import MarkdownPreviewer from '../components/Previewer/MarkdownPreviewer';
+import JavascriptPreviewer from '../components/Previewer/JavasciptPreviewer';
+import JsonPreviewer from '../components/Previewer/JsonPreviewer';
+
+import TextEditor from '../components/Editor/TextEditor';
+import MarkdownEditor from '../components/Editor/MarkdownEditor';
 
 import IconPlaintextSVG from '../public/icon-plaintext.svg';
 import IconMarkdownSVG from '../public/icon-markdown.svg';
@@ -24,7 +28,7 @@ const TYPE_TO_ICON = {
   'application/json': IconJSONSVG
 };
 
-function FilesTable({ files, activeFile, setActiveFile }) {
+const FilesTable = ({ files, activeFile, onSetActiveFile }) => {
   return (
     <div className={css.files}>
       <table>
@@ -42,7 +46,7 @@ function FilesTable({ files, activeFile, setActiveFile }) {
                 css.row,
                 activeFile && activeFile.name === file.name ? css.active : ''
               )}
-              onClick={() => setActiveFile(file)}
+              onClick={() => onSetActiveFile(file)}
             >
               <td className={css.file}>
                 <div
@@ -68,7 +72,7 @@ function FilesTable({ files, activeFile, setActiveFile }) {
       </table>
     </div>
   );
-}
+};
 
 FilesTable.propTypes = {
   files: PropTypes.arrayOf(PropTypes.object),
@@ -76,36 +80,24 @@ FilesTable.propTypes = {
   setActiveFile: PropTypes.func
 };
 
-function Previewer({ file }) {
-  const [value, setValue] = useState('');
-
-  useEffect(() => {
-    (async () => {
-      setValue(await file.text());
-    })();
-  }, [file]);
-
-  return (
-    <div className={css.preview}>
-      <div className={css.title}>{path.basename(file.name)}</div>
-      <div className={css.content}>{value}</div>
-    </div>
-  );
+const REGISTERED_EDITORS = {
+  'text/plain': TextEditor,
+  'text/markdown': MarkdownEditor,
+  'text/javascript': TextEditor,
+  'application/json': TextEditor
 }
 
-Previewer.propTypes = {
-  file: PropTypes.object
+const REGISTERED_PREVIEWERS = {
+  'text/plain': TextPreviewer,
+  'text/markdown': MarkdownPreviewer,
+  'text/javascript': JavascriptPreviewer,
+  'application/json': JsonPreviewer
 };
 
-// Uncomment keys to register editors for media types
-const REGISTERED_EDITORS = {
-  // "text/plain": PlaintextEditor,
-  // "text/markdown": MarkdownEditor,
-};
-
-function PlaintextFilesChallenge() {
+const PlaintextFilesChallenge = () => {
   const [files, setFiles] = useState([]);
   const [activeFile, setActiveFile] = useState(null);
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     const files = listFiles();
@@ -113,17 +105,26 @@ function PlaintextFilesChallenge() {
   }, []);
 
   const write = file => {
-    console.log('Writing soon... ', file.name);
+    setFiles(files.map(f => (file.name === f.name ? file : f)));
+    setActiveFile(file)
+  }
 
-    // TODO: Write the file to the `files` array
+  const handleSetActiveFile = activeFile => {
+    setActiveFile(activeFile);
+    setIsEdit(false);
   };
 
+  const Previewer = activeFile ? REGISTERED_PREVIEWERS[activeFile.type] : null;
   const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
 
   return (
     <div className={css.page}>
       <Head>
         <title>Rethink Engineering Challenge</title>
+        <link
+          rel="stylesheet"
+          href="highlight.css"
+        />
       </Head>
       <aside>
         <header>
@@ -138,7 +139,7 @@ function PlaintextFilesChallenge() {
         <FilesTable
           files={files}
           activeFile={activeFile}
-          setActiveFile={setActiveFile}
+          onSetActiveFile={handleSetActiveFile}
         />
 
         <div style={{ flex: 1 }}></div>
@@ -157,8 +158,10 @@ function PlaintextFilesChallenge() {
       <main className={css.editorWindow}>
         {activeFile && (
           <>
-            {Editor && <Editor file={activeFile} write={write} />}
-            {!Editor && <Previewer file={activeFile} />}
+            {isEdit && (
+              <Editor file={activeFile} write={write} setIsEdit={setIsEdit} onSetActiveFile={handleSetActiveFile}/>
+            )}
+            {!isEdit && <Previewer file={activeFile} setIsEdit={setIsEdit} />}
           </>
         )}
 
@@ -168,6 +171,6 @@ function PlaintextFilesChallenge() {
       </main>
     </div>
   );
-}
+};
 
 export default PlaintextFilesChallenge;

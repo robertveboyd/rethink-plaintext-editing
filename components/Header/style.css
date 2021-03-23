@@ -1,0 +1,36 @@
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-dark-mute);
+  padding: 10px 20px;
+  line-height: 40px;
+  background-color: var(--color-background);
+}
+
+.header .title {
+  font-size: 22px;
+  font-weight: 700;
+  padding-right: 16px;
+}
+
+.header .actions {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.header button {
+  display: flex;
+  align-items: center;
+}
+
+.header button > div {
+  padding-left: 8px;
+}
+
+.header img {
+  height: 24px;
+  width: 24px;
+}
